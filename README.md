@@ -23,7 +23,7 @@ CREATE TABLE distances("tariefgebied" INTEGER,"startuic" TEXT,"enduic" TEXT,"sta
 delete from distances where startuic in (select startuic from distances except select uic from mapping) or startuic in (select enduic from distances except select uic from mapping);
 delete from distances where enduic in (select startuic from distances except select uic from mapping) or enduic in (select enduic from distances except select uic from mapping);
 .header on
-.output /tmp/rail\_matrix.csv
+.output /tmp/rail_matrix.csv
 select b.placeref as startplaceref, c.placeref as endplaceref, first as distance, 'IFF:NS' as operatorref, 'NS:HRN' as fareref from distances as a left join mapping as b on (a.startuic = b.uic) left join mapping as c on (a.enduic = c.uic) where cast(strftime('%Y%m%d') as integer) >= startdate and (enddate is null or cast(strftime('%Y%m%d') as integer) <= enddate) order by startplaceref, endplaceref;
 .quit
 ```
